@@ -108,8 +108,10 @@ class Application
      */
     public function run(InputInterface $input = null, OutputInterface $output = null)
     {
-        putenv('LINES='.$this->terminal->getHeight());
-        putenv('COLUMNS='.$this->terminal->getWidth());
+        if (\function_exists('putenv')) {
+            putenv('LINES=' . $this->terminal->getHeight());
+            putenv('COLUMNS=' . $this->terminal->getWidth());
+        }
 
         if (null === $input) {
             $input = new ArgvInput();
@@ -870,8 +872,10 @@ class Application
     {
         @trigger_error(sprintf('The "%s()" method is deprecated as of 3.2 and will be removed in 4.0. Set the COLUMNS and LINES env vars instead.', __METHOD__), E_USER_DEPRECATED);
 
-        putenv('COLUMNS='.$width);
-        putenv('LINES='.$height);
+        if (\function_exists('putenv')) {
+            putenv('COLUMNS=' . $width);
+            putenv('LINES=' . $height);
+        }
 
         return $this;
     }
@@ -935,7 +939,9 @@ class Application
             $input->setInteractive(false);
         }
 
-        putenv('SHELL_VERBOSITY='.$shellVerbosity);
+        if (\function_exists('putenv')) {
+            putenv('SHELL_VERBOSITY=' . $shellVerbosity);
+        }
         $_ENV['SHELL_VERBOSITY'] = $shellVerbosity;
         $_SERVER['SHELL_VERBOSITY'] = $shellVerbosity;
     }
